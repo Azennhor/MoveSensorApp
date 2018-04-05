@@ -1,6 +1,6 @@
 <template>
-  <div @click="switchTo">
-    <img :src="pic" :class="active | toClass" >
+  <div @click="switchTo" :class="active | toClass">
+    <img src="icon" alt="">{{name}}
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 /* eslint-disable */
 export default {
   name: 'menuItem',
-  props: [ "pic", "name", "page" ],
+  props: [ "name", "page", "icon"],
   data () { return {
 			active: false,
     }},
@@ -22,14 +22,14 @@ export default {
 		}
   },
 	methods:{
-		switchTo(){						
+		switchTo(){
 			this.$emit("changepage", this.name);
 		}
 	},
 	watch:{
 		page(){
-			if( this.page === this.name)			
-				this.active = true;			
+			if( this.page === this.name)
+				this.active = true;
 			else
 				this.active = false;
 		}
@@ -41,10 +41,11 @@ export default {
 <style scoped>
 	.case
 	{
-		width: 2rem;
-		height: 2rem;
+		width: 100%;
 
 		background: lightblue;
+
+    cursor: pointer;
 	}
 	.active
 	{
