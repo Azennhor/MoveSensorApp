@@ -2,3 +2,74 @@ Server=tcp:movesensorserver.database.windows.net,1433;Initial Catalog=MoveSensor
 
 
 movesensorserver.database.windows.net
+
+
+using KhaleesiFunding.DAL.Entities;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KhaleesiFunding.DAL
+{
+    public class KfcDbContext : DbContext
+    {
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Contribution> Contributions { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Project> Projects{ get; set; }
+        public DbSet<Reward> Rewards{ get; set; }
+        public DbSet<User> Users{ get; set; }
+
+        public KfcDbContext() : base("KhaleesiFunding")
+        {
+            Database.SetInitializer(new KfcDbInitializer());
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.SentMessages)
+                .WithRequired(m => m.Creator)
+                .HasForeignKey<long>(m => m.CreatorId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.ReceivedMessages)
+                .WithMany(m => m.SentToUsers)
+                .Map(q =>
+                {
+                    q.MapLeftKey("UserId");
+                    q.MapRightKey("MessageId");
+                    q.ToTable("UserMessageReceived");
+                });
+
+            /*modelBuilder.Entity<User>()
+                .HasOptional(u => u.ReceivedMessages)
+                .WithMany()
+                .WillCascadeOnDelete(false);*/
+
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+        }
+
+    }
+
+    public class KfcDbInitializer : DropCreateDatabaseIfModelChanges<KfcDbContext>
+    {
+        protected override void Seed(KfcDbContext context)
+        {
+            User u = new User
+            {
+                Name = "John",
+                Password = "Doe",
+                IsAdmin = false
+            };
+
+            context.Users.Add(u);
+            context.SaveChanges();
+            base.Seed(context);
+        }
+    }
+}
