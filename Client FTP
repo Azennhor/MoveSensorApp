@@ -1,4 +1,4 @@
-ftp hostname : ftp://waws-prod-am2-095.ftp.azurewebsites.windows.net/site/wwwroot
+ftp hostname : waws-prod-am2-095.ftp.azurewebsites.windows.net
 username : SensorFrontEndApp\$SensorFrontEndApp
 password : BdTn5i1Ft5Zkf5AnqYS1XAMrL05swMvb8b1ACMWSE75o8dpR3kKsYyBX5oPX
 
