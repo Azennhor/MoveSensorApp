@@ -7,3 +7,27 @@ lien du site : https://sensorfrontendapp.azurewebsites.net/
 
 pour les requetes users en ajax lien http://sensorazureapp.azurewebsites.net/api/user
 pour les requetes places en ajax lien http://sensorazureapp.azurewebsites.net/api/parkingplace
+
+
+
+    <script>
+        $(document).ready(function ($) {
+            var content = $("#inlineFormCustomSelect");
+            var contentId = $("#inlineFormCustomSelectId");
+            $.ajax({
+                url: 'http://localhost:55152/api/Todo',
+                type: 'GET',
+                success: function (response) {
+                    console.log(response);
+                    for (var i in response) {
+                        content.append('<option value="' + response[i].Title + '">' + response[i].Title + '</option>');
+                        contentId.append('<option value="' + response[i].Id + '">' + response[i].Id + '</option>');
+                    }
+                }
+            });
+
+
+        })
+
+
+    </script>
